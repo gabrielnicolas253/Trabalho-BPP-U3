@@ -9,7 +9,12 @@
 
 using namespace std;
 
-string SENHA_ADMIN = "1234";  // senha do admin
+const string SENHA_ADMIN = "1234";  // senha do admin
+const double DESCONTO_1 = 0.1;
+const int LIMITE_1 = 100;
+const double DESCONTO_2 = 0.15;
+const int LIMITE_2 = 200;
+
 
 struct Produto {
     string nome;
@@ -38,8 +43,8 @@ double vender(string nome, int quantidade) {
                 produtos[i].qtd = produtos[i].qtd - quantidade;
                 double valor_total = produtos[i].preco * quantidade;
                 // desconto pra compras grandes
-                if (valor_total > 100) {
-                    valor_total = valor_total - valor_total * 0.1;
+                if (valor_total > LIMITE_1) {
+                    valor_total = valor_total - valor_total * DESCONTO_1;
                 }
                 cout << "Venda realizada. Total: " << valor_total << endl;
                 return valor_total;
@@ -56,8 +61,8 @@ double vender(string nome, int quantidade) {
 // calcula o total de uma compra (usado no relatorio)
 double calcular_total(double preco, int quantidade) {
     double total = preco * quantidade;
-    if (total > 200) {              // limite diferente do usado em vender()
-        total = total - total * 0.15;       // desconto diferente do usado em vender()
+    if (total > LIMITE_2) {              // limite diferente do usado em vender()
+        total = total - total * DESCONTO_2;       // desconto diferente do usado em vender()
     }
     return total;
 }
