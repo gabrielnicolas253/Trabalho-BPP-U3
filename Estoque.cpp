@@ -20,14 +20,14 @@ struct Produto {
 vector<Produto> produtos;
 
 // funcao que adiciona produto
-void add(string n, double p, int q) {
-    static vector<string> hist;   // historico
-    Produto prod;
-    prod.nome = n;
-    prod.preco = p;
-    prod.qtd = q;
-    produtos.push_back(prod);
-    hist.push_back(n);
+void adicionar_produto(string nome, double preco, int quantidade) {
+    static vector<string> historico_produtos;   // historico
+    Produto produto;
+    produto.nome = nome;
+    produto.preco = preco;
+    produto.qtd = quantidade;
+    produtos.push_back(produto);
+    historico_produtos.push_back(nome);
     cout << "Produto adicionado!" << endl;
 }
 
@@ -36,13 +36,13 @@ double vender(string nome, int quantidade) {
         if (produtos[i].nome == nome) {
             if (produtos[i].qtd >= quantidade) {
                 produtos[i].qtd = produtos[i].qtd - quantidade;
-                double total = produtos[i].preco * quantidade;
+                double valor_total = produtos[i].preco * quantidade;
                 // desconto pra compras grandes
-                if (total > 100) {
-                    total = total - total * 0.1;
+                if (valor_total > 100) {
+                    valor_total = valor_total - valor_total * 0.1;
                 }
-                cout << "Venda realizada. Total: " << total << endl;
-                return total;
+                cout << "Venda realizada. Total: " << valor_total << endl;
+                return valor_total;
             } else {
                 cout << "Estoque insuficiente" << endl;
                 return 0;
@@ -55,14 +55,14 @@ double vender(string nome, int quantidade) {
 
 // calcula o total de uma compra (usado no relatorio)
 double calcular_total(double preco, int quantidade) {
-    double t = preco * quantidade;
-    if (t > 200) {              // limite diferente do usado em vender()
-        t = t - t * 0.15;       // desconto diferente do usado em vender()
+    double total = preco * quantidade;
+    if (total > 200) {              // limite diferente do usado em vender()
+        total = total - total * 0.15;       // desconto diferente do usado em vender()
     }
-    return t;
+    return total;
 }
 
-void listar() {
+void listar_produtos() {
     cout << "=== PRODUTOS ===" << endl;
     for (int i = 0; i < produtos.size(); i++) {
         cout << produtos[i].nome << " - R$" << produtos[i].preco
@@ -100,33 +100,33 @@ int main() {
         string op;
         cin >> op;
         if (op == "1") {
-            string n;
-            double p;
-            int q;
+            string nome;
+            double preco;
+            int quantidade;
             cout << "Nome: ";
-            cin >> n;
+            cin >> nome;
             cout << "Preco: ";
-            cin >> p;          // quebra se digitar texto
+            cin >> preco;          // quebra se digitar texto
             cout << "Qtd: ";
-            cin >> q;          // quebra se digitar texto
-            add(n, p, q);
+            cin >> quantidade;          // quebra se digitar texto
+            adicionar_produto(nome, preco, quantidade);
         } else if (op == "2") {
-            string n;
-            int q;
+            string nome;
+            int quantidade;
             cout << "Nome do produto: ";
-            cin >> n;
+            cin >> nome;
             cout << "Quantidade: ";
-            cin >> q;
-            vender(n, q);
+            cin >> quantidade;
+            vender(nome, quantidade);
         } else if (op == "3") {
-            listar();
+            listar_produtos();
         } else if (op == "4") {
             relatorio_estoque_baixo();
         } else if (op == "5") {
-            string s;
+            string senha;
             cout << "Senha: ";
-            cin >> s;
-            if (s == SENHA_ADMIN) {
+            cin >> senha;
+            if (senha == SENHA_ADMIN) {
                 cout << "Acesso liberado" << endl;
             } else {
                 cout << "Senha errada" << endl;
